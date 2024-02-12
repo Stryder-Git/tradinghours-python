@@ -47,7 +47,7 @@ jobs:
       - name: get from test pypi
         run: |
           while [ "$DEV_VERSION" != $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q) ];\
-            do echo not found yet, sleeping 3s; sleep 3s; done
+            do echo not found yet, sleeping 5s; sleep 5s; done
           pip install -i https://test.pypi.org/simple tradinghours==$DEV_VERSION --no-deps
 
       - name: run tests
