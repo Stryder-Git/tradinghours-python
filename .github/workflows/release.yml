@@ -20,9 +20,6 @@ jobs:
 
       - name: get current version
         id: current_version
-        env:
-          GITHUB_RUN_NUMBER: ${{ github.run_number }}
-          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           PYPI_VERSION=$(pip index versions tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)
           NEW_VERSION=$(grep '__version__' src/tradinghours/__init__.py | cut -d '"' -f 2)
@@ -33,26 +30,23 @@ jobs:
           fi
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           
-          DEV_VERSION=$NEW_VERSION.rc${{GITHUB_RUN_NUMBER}}.dev${{GITHUB_RUN_ATTEMPT}}
+          DEV_VERSION=$NEW_VERSION.rc${{github.run_number}}.dev${{github.run_attempt}}
           echo "setting version to $DEV_VERSION"
           sed -i "s/$NEW_VERSION/$DEV_VERSION/" src/tradinghours/__init__.py
 
-      - name: Install dependencies
-        run: pip install flit pytest
+#      - name: Install dependencies
+#        run: pip install flit pytest
 
-      - name: release to test pyp
-        run: |
-          export FLIT_USERNAME=__token__
-          export FLIT_PASSWORD=pypi-AgENdGVzdC5weXBpLm9yZwIkMGIzNWE5YWYtODk2My00YjAwLWJjMDctZDgwYTNhZWU5ZTE4AAIUWzEsWyJ0cmFkaW5naG91cnMiXV0AAixbMixbIjM4OTg2MjcyLWE1NDgtNGUwYy04YTM1LTIwMzM5YzMxNWRhZiJdXQAABiAmXtXRrImt8nB72olW41OSqOHl3JOLCygM0ELRX3ebEQ
-          export FLIT_INDEX_URL=https://test.pypi.org/legacy
-          flit publish
+#      - name: release to test pyp
+#        run: |
+#          export FLIT_USERNAME=__token__
+#          export FLIT_PASSWORD=pypi-AgENdGVzdC5weXBpLm9yZwIkMGIzNWE5YWYtODk2My00YjAwLWJjMDctZDgwYTNhZWU5ZTE4AAIUWzEsWyJ0cmFkaW5naG91cnMiXV0AAixbMixbIjM4OTg2MjcyLWE1NDgtNGUwYy04YTM1LTIwMzM5YzMxNWRhZiJdXQAABiAmXtXRrImt8nB72olW41OSqOHl3JOLCygM0ELRX3ebEQ
+#          export FLIT_INDEX_URL=https://test.pypi.org/legacy
+#          flit publish
 
       - name: get from test pypi
-        env:
-          GITHUB_RUN_NUMBER: ${{ github.run_number }}
-          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          DEV_VERSION=$NEW_VERSIONrc${{GITHUB_RUN_NUMBER}}.dev${{GITHUB_RUN_ATTEMPT}}
+          DEV_VERSION=${NEW_VERSION}rc${{git.run_number}}.dev${{git.run_attempt}}
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
             do echo not found yet, sleeping 10s; sleep 10s; echo "found version $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)"; done
