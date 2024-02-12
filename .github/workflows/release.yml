@@ -1,7 +1,7 @@
 name: Testing and Coverage
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -18,15 +18,20 @@ jobs:
         with:
           python-version: '3.11'  # Ensure this matches your project's Python version
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: 1.5.6
-          tag_name: 1.5.6
-          body: |
-            Changes:
-              - some change
-              - some other change
+      - name: print body
+        run: |
+          echo "body is:\n${{ github.event.pull_request.body }} "
+
+
+
+#      - name: Create Release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          name: 1.5.6
+#          tag_name: 1.5.6
+#          body: |
+#            Changes:
+#
     
 
 #      - name: get current version
