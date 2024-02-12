@@ -29,7 +29,7 @@ jobs:
             exit 1
           fi
           
-          DEV_VERSION=$NEW_VERSION.rc${{github.run_number}}.dev${{github.run_attempt}}
+          DEV_VERSION=$NEW_VERSIONrc${{github.run_number}}.dev${{github.run_attempt}}
           echo "DEV_VERSION=$DEV_VERSION" >> $GITHUB_ENV
           echo "setting version to $DEV_VERSION"
           sed -i "s/$NEW_VERSION/$DEV_VERSION/" src/tradinghours/__init__.py
@@ -47,7 +47,7 @@ jobs:
       - name: get from test pypi
         run: |
           echo "$DEV_VERSION"
-          while [ "$DEV_VERSION" != $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q) ];\
+          while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
             do echo not found yet, sleeping 10s; sleep 10s; echo "found version $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)"; done
           pip install -i https://test.pypi.org/simple tradinghours==$DEV_VERSION --no-deps
 
