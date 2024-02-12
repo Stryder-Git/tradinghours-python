@@ -18,20 +18,21 @@ jobs:
         with:
           python-version: '3.11'  # Ensure this matches your project's Python version
 
-      - name: print body
+      - name: Extract Release Summary
         run: |
-          echo "body is:\n${{ github.event.pull_request.body }} "
+          RELEASE_SUMMARY=$(${{ github.event.pull_request.body }}" | awk '/Release Summary:/,EOF' | sed '1d')
+          echo -e $RELEASE_SUMMARY
+          echo "RELEASE_SUMMARY=$RELEASE_SUMMARY" >> $GITHUB_ENV
+        shell: bash
 
-
-
-#      - name: Create Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          name: 1.5.6
-#          tag_name: 1.5.6
-#          body: |
-#            Changes:
-#
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: 1.5.6
+          tag_name: 1.5.6
+          body: |
+            Changes:
+            $RELEASE_SUMMARY
     
 
 #      - name: get current version
