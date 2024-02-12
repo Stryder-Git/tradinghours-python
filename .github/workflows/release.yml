@@ -20,7 +20,7 @@ jobs:
 
       - name: Extract Release Summary
         run: |
-          RELEASE_SUMMARY=$(${{ github.event.pull_request.body }}" | awk '/Release Summary:/,EOF' | sed '1d')
+          RELEASE_SUMMARY=$("${{ github.event.pull_request.body }}" | awk '/Release Summary:/,EOF' | sed '1d')
           echo -e $RELEASE_SUMMARY
           echo "RELEASE_SUMMARY=$RELEASE_SUMMARY" >> $GITHUB_ENV
         shell: bash
