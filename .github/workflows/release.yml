@@ -29,7 +29,7 @@ jobs:
             exit 1
           fi
           
-          DEV_VERSION=${{env.NEW_VERSION}}rc${{github.run_number}}
+          DEV_VERSION=${{env.NEW_VERSION}}.rc${{github.run_number}}.dev${{github.run_attempt}}
           echo "DEV_VERSION=$DEV_VERSION" >> $GITHUB_ENV
           echo "setting version to $DEV_VERSION"
           sed -i "s/$NEW_VERSION/$DEV_VERSION/" src/tradinghours/__init__.py
