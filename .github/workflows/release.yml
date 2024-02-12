@@ -46,6 +46,7 @@ jobs:
 
       - name: get from test pypi
         run: |
+          echo "$NEW_VERSION"
           DEV_VERSION=$NEW_VERSIONrc${{github.run_number}}.dev${{github.run_attempt}}
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
