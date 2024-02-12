@@ -18,16 +18,16 @@ jobs:
         with:
           python-version: '3.11'  # Ensure this matches your project's Python version
 
-      - name: Tag the release
-        uses: actions/github-script@v5
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
-          script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/1.5.5',
-              sha: context.sha
-            });
+          name: 1.5.5
+          tag_name: 1.5.5
+          body: |
+            Changes:
+              - some change
+              - some other change
+    
 
 #      - name: get current version
 #        id: current_version
