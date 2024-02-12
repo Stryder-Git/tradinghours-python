@@ -17,14 +17,14 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.11'  # Ensure this matches your project's Python version
-
-      - name: Extract Release Summary
-        id: release_summary
-        run: |
-          RELEASE_SUMMARY=$(echo "${{ github.event.pull_request.body }}" | awk '/Release Summary:/,EOF' | sed '1d')
-          echo -e $RELEASE_SUMMARY
-          echo "::set-output name=release_summary::$RELEASE_SUMMARY"
-        shell: bash
+#
+#      - name: Extract Release Summary
+#        id: release_summary
+#        run: |
+#          RELEASE_SUMMARY=$(echo "${{ github.event.pull_request.body }}" | awk '/Release Summary:/,EOF' | sed '1d')
+#          echo -e $RELEASE_SUMMARY
+#          echo "::set-output name=release_summary::$RELEASE_SUMMARY"
+#        shell: bash
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -32,8 +32,7 @@ jobs:
           name: 1.5.6
           tag_name: 1.5.6
           body: |
-            Changes:
-            ${{ steps.release_summary.outputs.release_summary }}
+            ${{ github.event.pull_request.body }}
     
 
 #      - name: get current version
