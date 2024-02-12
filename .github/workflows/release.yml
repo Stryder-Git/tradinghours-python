@@ -10,11 +10,20 @@ jobs:
   test_pypi:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'  # Ensure this matches your project's Python version
+
       - name: get current version
         id: current_version
         run: |
           PYPI_VERSION=$(pip index versions tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)
           NEW_VERSION=$(grep '__version__' src/tradinghours/__init__.py | cut -d '"' -f 2)
+          echo "comparing $NEW_VERSION with $PYPI_VERSION"
           if [[ $NEW_VERSION == $PYPI_VERSION ]]; then
             echo "Version needs to be incremented."
             exit 1
