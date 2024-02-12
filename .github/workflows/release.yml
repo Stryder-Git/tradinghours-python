@@ -20,6 +20,9 @@ jobs:
 
       - name: get current version
         id: current_version
+        env:
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           PYPI_VERSION=$(pip index versions tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)
           NEW_VERSION=$(grep '__version__' src/tradinghours/__init__.py | cut -d '"' -f 2)
@@ -30,7 +33,7 @@ jobs:
           fi
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           
-          DEV_VERSION=$NEW_VERSION.rc${{github.run_number}}.dev${{github.run_attempt}}
+          DEV_VERSION=$NEW_VERSION.rc${{GITHUB_RUN_NUMBER}}.dev${{GITHUB_RUN_ATTEMPT}}
           echo "setting version to $DEV_VERSION"
           sed -i "s/$NEW_VERSION/$DEV_VERSION/" src/tradinghours/__init__.py
 
@@ -45,8 +48,11 @@ jobs:
           flit publish
 
       - name: get from test pypi
+        env:
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          DEV_VERSION="$NEW_VERSIONrc${{github.run_number}}.dev${{github.run_attempt}}"
+          DEV_VERSION=$NEW_VERSIONrc${{GITHUB_RUN_NUMBER}}.dev${{GITHUB_RUN_ATTEMPT}}
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
             do echo not found yet, sleeping 10s; sleep 10s; echo "found version $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)"; done
