@@ -41,7 +41,7 @@ jobs:
         run: |
           export FLIT_USERNAME=__token__
           export FLIT_PASSWORD=pypi-AgENdGVzdC5weXBpLm9yZwIkMGIzNWE5YWYtODk2My00YjAwLWJjMDctZDgwYTNhZWU5ZTE4AAIUWzEsWyJ0cmFkaW5naG91cnMiXV0AAixbMixbIjM4OTg2MjcyLWE1NDgtNGUwYy04YTM1LTIwMzM5YzMxNWRhZiJdXQAABiAmXtXRrImt8nB72olW41OSqOHl3JOLCygM0ELRX3ebEQ
-          flit publish -r https://test.pypi.org/legacy/
+          flit publish --repository https://test.pypi.org/legacy/
 
       - name: get from test pypi
         run: |
