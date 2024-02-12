@@ -48,8 +48,8 @@ jobs:
         run: |
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q) ];\
-            do echo not found yet, sleeping 5s; sleep 5s; done
-            echo "found version $(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)"
+            do echo not found yet, sleeping 10s; sleep 10s; done
+            echo "found version $(pip index versions -i https://test.pypi.org/simple --pre tradinghours)"
           pip install -i https://test.pypi.org/simple tradinghours==$DEV_VERSION --no-deps
 
       - name: run tests
