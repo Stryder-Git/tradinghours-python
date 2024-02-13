@@ -1,4 +1,4 @@
-import csv
+import csv, requests
 import json
 import re
 from io import StringIO
