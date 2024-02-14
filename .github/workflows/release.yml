@@ -26,8 +26,11 @@ jobs:
         line_number=$(grep -n '^## ' "release_log.txt" | head -2 | tail -1 | cut -d: -f1)
         SUMMARY="$(sed -n "2,$(( ${line_number} -1))p" release_log.txt)"
         echo "${SUMMARY}"
-        echo "summary="${SUMMARY}"" >> "$GITHUB_OUTPUT"
-      
+        
+        echo "summary<<EOF" >> $GITHUB_OUTPUT
+        echo "${SUMMARY}" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
         sed -i "s/## new_release/## ${VERSION} ($(date +%Y-%m-%d))/" release_log.txt
 
     - uses: stefanzweifel/git-auto-commit-action@v4
@@ -46,9 +49,10 @@ jobs:
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
+
       with:
         name: ${{ steps.update_info.outputs.version }}
         tag_name: ${{ steps.update_info.outputs.version }}
         body: |
-          "${{ steps.update_info.outputs.summary }}"
+          ${{ steps.update_info.outputs.summary }}
   
