@@ -30,7 +30,7 @@ jobs:
             exit 1
           fi
           
-          echo "::set-output name=new_version::some data"
+          echo "::set-output name=new_version::${NEW_VERSION}"
           
           DEV_VERSION=$NEW_VERSION.rc${{github.run_number}}.dev${{github.run_attempt}}
           echo "setting version to $DEV_VERSION"
