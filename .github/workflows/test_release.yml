@@ -66,32 +66,32 @@ jobs:
       - name: run import tests
         run: |
           pip show tradinghours
-#
-#          export TRADINGHOURS_TOKEN=${{ secrets.TEST_KEY }}
-#
-#          tradinghours import
-#          tradinghours status --extended
-#
-#          python -c "from tradinghours import Market, Currency; m = Market.get('XNYS'); m.list_holidays('2020-01-01', '2025-01-01');m.generate_schedules('2024-01-01', '2024-01-04'); c = Currency.get('USD');c.list_holidays('2020-01-01', '2025-01-01');"
+
+          export TRADINGHOURS_TOKEN=${{ secrets.TEST_KEY }}
+
+          tradinghours import
+          tradinghours status --extended
+
+          python -c "from tradinghours import Market, Currency; m = Market.get('XNYS'); m.list_holidays('2020-01-01', '2025-01-01');m.generate_schedules('2024-01-01', '2024-01-04'); c = Currency.get('USD');c.list_holidays('2020-01-01', '2025-01-01');"
 
       - name: Check out code
         uses: actions/checkout@v2
 
-#      - name: run all tests
-#          pip install pytest pytest-mock
-#
-#          export TRADINGHOURS_TOKEN=${{ secrets.TEST_KEY }}
-#
-#          tradinghours import
-#          tradinghours status --extended
-#
-#          pytest
+      - name: run all tests
+          pip install pytest pytest-mock
 
-      - name: Save PR body to a file
-        run: echo "${{ github.event.pull_request.body }}" > pr_body.txt
+          export TRADINGHOURS_TOKEN=${{ secrets.TEST_KEY }}
 
-      - name: Upload PR body as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: pr-body
-          path: pr_body.txt
+          tradinghours import
+          tradinghours status --extended
+
+          pytest
+
+#      - name: Save PR body to a file
+#        run: echo "${{ github.event.pull_request.body }}" > pr_body.txt
+#
+#      - name: Upload PR body as artifact
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: pr-body
+#          path: pr_body.txt
