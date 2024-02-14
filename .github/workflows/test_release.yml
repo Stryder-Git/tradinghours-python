@@ -37,7 +37,7 @@ jobs:
           sed -i "s/$NEW_VERSION/$DEV_VERSION/" src/tradinghours/__init__.py
 
       - name: Install dependencies
-        run: pip install flit pytest pytest-mock
+        run: pip install flit
 
       - name: release to test pypi
         run: |
