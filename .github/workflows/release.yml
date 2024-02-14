@@ -21,7 +21,7 @@ jobs:
       id: update_info
       run: |
         VERSION=$(grep '__version__' src/tradinghours/__init__.py | cut -d '"' -f 2)
-        echo "version={$VERSION}" >> "$GITHUB_OUTPUT"
+        echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
         line_number=$(grep -n '^## ' "release_log.txt" | head -2 | tail -1 | cut -d: -f1)
         SUMMARY="$(sed -n "2,$(( ${line_number} -1))p" release_log.txt)"
@@ -47,8 +47,8 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        name: ${ steps.update_info.outputs.version }
-        tag_name: ${ steps.update_info.outputs.version }
+        name: ${{ steps.update_info.outputs.version }}
+        tag_name: ${{ steps.update_info.outputs.version }}
         body: |
-          "${ steps.update_info.outputs.summary }"
+          "${{ steps.update_info.outputs.summary }}"
   
