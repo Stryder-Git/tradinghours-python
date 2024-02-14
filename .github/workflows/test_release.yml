@@ -8,6 +8,8 @@ on:
 jobs:
   push_to_test_pypi:
     runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.current_version.outputs.new_version }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -27,7 +29,8 @@ jobs:
             echo "Version needs to be incremented."
             exit 1
           fi
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          
+          echo "::set-output name=new_version::some data"
           
           DEV_VERSION=$NEW_VERSION.rc${{github.run_number}}.dev${{github.run_attempt}}
           echo "setting version to $DEV_VERSION"
@@ -49,6 +52,7 @@ jobs:
     steps:
       - name: get from test pypi
         run: |
+          NEW_VERSION=${{ needs.push_to_test_pypi.outputs.new_version }}
           DEV_VERSION=${NEW_VERSION}rc${{github.run_number}}.dev${{github.run_attempt}}
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
