@@ -1,3 +1,11 @@
+## new_release
+changes:
+  * stuff
+
+other changes:
+  * more stuff
+
+
 ## 0.2.1.2 (2024-02-14)
 Breaking Changes:
   * renamed Market.generate_schedules to Market.generate_phases
