@@ -23,7 +23,7 @@ jobs:
         VERSION=$(grep '__version__' src/tradinghours/__init__.py | cut -d '"' -f 2)
         echo "version={$VERSION}" >> "$GITHUB_OUTPUT"
 
-        SUMMARY = $(sed -n "2,$(( (grep -n '^## ' "release_log.txt" | head -2 | tail -1 | cut -d: -f1) -1))p")
+        SUMMARY=$(sed -n "2,$(( (grep -n '^## ' "release_log.txt" | head -2 | tail -1 | cut -d: -f1) -1))p")
         echo "summary=${SUMMARY}" >> "$GITHUB_OUTPUT"
       
         sed -i "s/## new_release/## ${VERSION} ($(date +%Y-%m-%d))/" release_log.txt
