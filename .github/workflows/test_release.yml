@@ -61,7 +61,7 @@ jobs:
           echo "$DEV_VERSION"
           while [ "$DEV_VERSION" != "$(pip index versions -i https://test.pypi.org/simple --pre tradinghours | cut -d'(' -f2 | cut -d')' -f1 | sed 1q)" ];\
             do echo not found yet, sleeping 5s; sleep 5s; done
-          pip install -i https://test.pypi.org/simple tradinghours==$DEV_VERSION
+          pip install tradinghours==$DEV_VERSION --extra-index-url https://test.pypi.org/simple/
 
       - name: run import tests
         run: |
