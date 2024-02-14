@@ -50,6 +50,11 @@ jobs:
     needs: push_to_test_pypi
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'  # Ensure this matches your project's Python version
+
       - name: get from test pypi
         run: |
           DEV_VERSION=${{ needs.push_to_test_pypi.outputs.dev_version }}
@@ -58,10 +63,15 @@ jobs:
             do echo not found yet, sleeping 5s; sleep 5s; done
           pip install -i https://test.pypi.org/simple tradinghours==$DEV_VERSION
 
-      - name: run tests
+      - name: run import tests
         run: |
-          python -c "import tradinghours"
+          pip show tradinghours
+          python -c "from tradinghours import Market, Currency; m = Market.get('XNYS'); m.list_holidays('2020-01-01', '2025-01-01');m.generate_schedules('2024-01-01', '2024-01-04'); c = Currency.get('USD');c.list_holidays('2020-01-01', '2025-01-01');"
 
+      - name: Check out code
+        uses: actions/checkout@v2
+
+#      - name: run all tests
 #          pip install pytest pytest-mock
 #
 #          export TRADINGHOURS_TOKEN=${{ secrets.TEST_KEY }}
